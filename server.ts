@@ -1,23 +1,23 @@
-// import dependencies
-// use middlewares, routes
-// listen to app on a particular port
+import { env } from "./src/env";
+import { App } from "./src/app";
 
 const dotenv = require('dotenv');
-dotenv.config();
-import express = require('express');
+dotenv.config()
 
-const PORT:number = parseInt(process.env.PORT as string) || 8080;
-// javascript
-const app = express();
+const PORT: number = env().port; // getting the port based on current environment.
 
-app.get('/', (req:express.Request, res:express.Response) => {
-    res.send({status:"Ok"})
-})
+/* Configure App instance*/
+// making a new object for App class.
+const app = new App(PORT, [], []);
 
-app.listen(PORT, () => {
-    console.log(`Server Started On port http://localhost:${PORT}`)
-})
+try {
+  /* Connect to MongoDB*/
+  const {user, pw, name, account} = env().db;
+  const DB_URI = env().db.uri(user,pw,name,account);
+  app.mongoDB(DB_URI);
+} catch(e) {
+  console.log(e);
+  console.log("Failed to create DB Connection string");
+}
 
-// typescript 
-// using classes everywhere.
-// app class and then we will create an object out it and then usko use krenge.
+app.listen();
