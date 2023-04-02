@@ -23,6 +23,3 @@ try {
 }
 
 app.listen();
-
-// app 
-// middlewares add krne hai.
