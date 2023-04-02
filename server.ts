@@ -1,5 +1,7 @@
 import { env } from "./src/env";
 import { App } from "./src/app";
+import { __middleware } from "./src/middleware";
+import __routes from "./src/routes";
 
 const dotenv = require('dotenv');
 dotenv.config()
@@ -8,7 +10,7 @@ const PORT: number = env().port; // getting the port based on current environmen
 
 /* Configure App instance*/
 // making a new object for App class.
-const app = new App(PORT, [], []);
+const app = new App(PORT, __middleware, __routes);
 
 try {
   /* Connect to MongoDB*/
@@ -21,3 +23,6 @@ try {
 }
 
 app.listen();
+
+// app 
+// middlewares add krne hai.

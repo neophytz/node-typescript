@@ -1,6 +1,8 @@
 import { env } from "./env";
 import { Application } from "express";
 import express = require("express");
+import { StatusCodes } from "http-status-codes";
+
 import mongoose = require("mongoose");
 
 export class App {
@@ -19,16 +21,22 @@ export class App {
     constructor(
         private port: number,
         middleware: Array<any>,
-        routes: Array<any>
+        routes: Record<string, express.Router>
     ) {
         this.app = express();
         this.middleware(middleware);
-        // this.routes(routes);
+        this.routes(routes);
         this.assets(this.staticPath);
     }
 
     /**
      * @param _middleware Array of middleware to be loaded into express app
+    */
+   /**[
+    *   body_parser,
+    *   cors,
+    *   auth_middleware,
+    * ]
     */
     private middleware(_middleware: any[]) {
         _middleware.forEach((m) => {
@@ -43,6 +51,21 @@ export class App {
     /**
      * Attaches route objects to app, appending routes to `apiPath`
      * @param routes Array of router objects to be attached to the app
+     */
+
+    private routes(_routes : Record<string, express.Router>) {
+        Object.keys(_routes).forEach((key) => {
+            this.app.use(`${this.apiPath}/${key}`, _routes[key])
+        })
+    }
+    /**
+     * Before
+     * this.app.use('/api', studentRouter)
+     * this.app.use('/api', adminRouter)
+     * 
+     * After
+     * this.app.use('/api/student', studentRouter)
+     * this.app.use('/api/admin', adminRouter)
      */
 
 
