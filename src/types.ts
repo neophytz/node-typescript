@@ -10,6 +10,7 @@ export interface IEnv {
   domain: string;
   apiPath: string;
   staticPath: string;
+  secretKey?:string;
 }
 
 export interface IMongoDBCfg {

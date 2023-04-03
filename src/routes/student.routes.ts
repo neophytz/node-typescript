@@ -1,23 +1,10 @@
-import express, { Request, Response, Router } from "express";
-import { StatusCodes } from "http-status-codes";
+import express, { Router } from "express";
+import { create, getAllStudent } from "../controllers/student.controller";
 
 const studentRouter : Router = express.Router();
 
-studentRouter.get('/', (req:Request, res:Response) : void => {
-    res.status(StatusCodes.OK).json({
-        status:"ok",
-        message:"Hello student"
-    })
-    return;
-})
-
-studentRouter.post('/', (req:Request, res:Response) : void => {
-    console.log(req.body);
-    res.status(StatusCodes.CREATED).json({
-        status:"ok",
-        message:"created new entry."
-    })
-    return;
-})
+studentRouter
+    .get('/all', getAllStudent)
+    .post('/', create)
 
 export = studentRouter;
